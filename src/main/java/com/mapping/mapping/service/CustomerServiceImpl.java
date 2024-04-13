@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,8 @@ public class CustomerServiceImpl {
 
     @Autowired
     ProductRepository productRepository;
+
+    private Logger log = Logger.getLogger(CustomerServiceImpl.class.getName());
 
     public CustomerDTO saveOrder(CustomerDTO customerDTO){
         Customer customer = new Customer();
@@ -60,9 +63,12 @@ public class CustomerServiceImpl {
         for(Product addProduct:productToAdd){
             addProduct.setCustomer(customer);
             productRepository.save(addProduct);
+            log.info("Inside here");
 
         }
 //        customer.setProduct(productToAdd);
+        customer.setProduct(productToAdd);
+        customerRepository.save(customer);
          return CustomerUtil.convertToDTO(customer);
 
     }
